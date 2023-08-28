@@ -1,31 +1,46 @@
 import React from "react";
 import Table from 'react-bootstrap/Table';
-import ButtonsManageProducts from "./ButtonsManageProducts";
+import Button from 'react-bootstrap/Button';
+import ButtonGroup from 'react-bootstrap/ButtonGroup';
 
 export default function Tabla(props) {
   console.log("Manage Tabla")
-  console.log(props)
+
+  const {openDeleteModal,openSaleModal,openEditModal, ...modalProps} = props;
+
   return (
-    <Table striped bordered hover size="sm" >
+    <Table 
+      {...modalProps}
+      striped bordered hover size="sm" >
       <thead>
         <tr>
           <th>ID</th>
           <th>Name</th>
           <th>Description</th>
-          <th>Category</th>
+          <th>Brand</th>
           <th>Price</th>
           <th>Stock</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>Leche</td>
-          <td>Leche evaporada</td>
-          <td>Gloria</td>
-          <td>2.5</td>
-          <td>26</td>
-          <td><ButtonsManageProducts onHideDelete={props.onHideDelete} onHideSale={props.onHideSale}/></td>
-        </tr>
+        {props.products.map(product => (
+          <tr key={product.id}>
+            <td>{product.id}</td>
+            <td>{product.name}</td>
+            <td>{product.description}</td>
+            <td>{product.brand}</td>
+            <td>{product.price}</td>
+            <td>{product.stock}</td>
+            <td>
+              <ButtonGroup aria-label="Basic example">
+                <Button variant="secondary" onClick={() => openDeleteModal(product.id)}>Delete</Button>
+                <Button variant="secondary" onClick={() => openEditModal(product.id)}>Edit</Button>
+                <Button variant="secondary" onClick={() => openSaleModal(product.id)}>Sale</Button>
+              </ButtonGroup>
+            </td>
+          </tr>
+        ))}
       </tbody>
     </Table>
   );

@@ -4,13 +4,13 @@ import Button from "react-bootstrap/Button";
 import Form from 'react-bootstrap/Form';
 import ModalAddProduct from "./ModalAddProduct"
 
-export default function Management(){
+export default function Management(props){
     const [modalShow, setModalShow] = React.useState(false);
 
     return(
         <div className="my-2 navbar navbar-expand-lg">
             <Container>
-            <Form className="d-flex">
+                <Form className="d-flex">
                     <Form.Control
                         type="search"
                         placeholder="Search"
@@ -27,6 +27,7 @@ export default function Management(){
                 <ModalAddProduct
                     show={modalShow}
                     onHide={() => setModalShow(false)}
+                    addProduct={props.addProduct}
                 />
             </Container>
         </div>

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useState,useEffect} from "react";
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
@@ -6,32 +6,50 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
 
-export default function ModalAddProduct(props) {
+export default function ModalEditProduct(props){
 
-    const {addProduct, ...modalProps} = props;
+    const {productSelected, ...modalProps} = props;
 
-    const [product, setProduct] = useState({
+    console.log("loading----")
+    console.log(productSelected)
+
+    const [editProduct, setEditProduct] = useState({
+        id: '',
         name: '',
         description: '',
         brand: '',
         price: 0,
-        stock: 0,
+        stock: 0
     });
+
+    useEffect(() => {
+        if(productSelected) { // Comprueba si productSelected tiene valor
+            setEditProduct({
+                id: productSelected.id || '',
+                name: productSelected.name || '',
+                description: productSelected.description || '',
+                brand: productSelected.brand || '',
+                price: productSelected.price || 0,
+                stock: productSelected.stock || 0
+            });
+        }
+    }, [productSelected]);
+
+    
 
     const handleChange = (event) => {
         const { name, value } = event.target;
-        setProduct(prevProduct => ({ ...prevProduct, [name]: value }));
+        setEditProduct(prevProduct => ({ ...prevProduct, [name]: value }));
     };
 
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/products/', product);
-            console.log('Product added:', response.data);
+            const response = await axios.put('http://localhost:8000/products/', editProduct);
+            console.log('Product updated:', response.data);
             props.onHide();
-            props.addProduct(response.data)
-        } catch (error) {
-            console.error('Error adding product:', error);
+        } catch (error){
+            console.error('Error updating product:', error);
         }
     };
 
@@ -42,7 +60,7 @@ export default function ModalAddProduct(props) {
         keyboard={false}
         >
             <Modal.Header closeButton>
-                <Modal.Title>Add product</Modal.Title>
+                <Modal.Title>Edit product</Modal.Title>
             </Modal.Header>
             <Modal.Body>
                 <Form onSubmit={handleSubmit}>
@@ -52,7 +70,7 @@ export default function ModalAddProduct(props) {
                         <Form.Control
                             name="name"
                             placeholder="Name of product"
-                            value={product.name}
+                            value={editProduct.name}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -62,7 +80,7 @@ export default function ModalAddProduct(props) {
                         <Form.Control
                             name="description"
                             placeholder="Description of product"
-                            value={product.description}
+                            value={editProduct.description}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -72,7 +90,7 @@ export default function ModalAddProduct(props) {
                         <Form.Control
                             name="brand"
                             placeholder="Brand of product"
-                            value={product.brand}
+                            value={editProduct.brand}
                             onChange={handleChange}
                         />
                     </Form.Group>
@@ -82,7 +100,7 @@ export default function ModalAddProduct(props) {
                         <Form.Label>Price</Form.Label>
                         <Form.Control
                             name="price"
-                            value={product.price}
+                            value={editProduct.price}
                             onChange={handleChange}
                             type="number"
                         />
@@ -92,7 +110,7 @@ export default function ModalAddProduct(props) {
                             <Form.Label>Stock</Form.Label>
                             <Form.Control
                                 name="stock"
-                                value={product.stock}
+                                value={editProduct.stock}
                                 onChange={handleChange}
                                 type="number"
                             />
@@ -110,5 +128,5 @@ export default function ModalAddProduct(props) {
             </Modal.Body>
             
         </Modal>
-    );
-  }
+    )
+}
