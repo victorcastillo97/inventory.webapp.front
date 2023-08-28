@@ -26,7 +26,7 @@ export default function ModalSale(props) {
         try {
             dataSale["product_id"] = productSelected["id"];
             console.log("dataSale: ", dataSale);
-            const response = await axios.post('http://localhost:8000/orders/complete', dataSale);
+            const response = await axios.post('http://localhost:8000/orders/', dataSale);
             console.log('Order added:', response.data);
             props.onHide();
         } catch (error) {
