@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+const APIGATEWAY_URL = process.env.REACT_APP_APIGATEWAY_URL;
 
 export default function ModalAddProduct(props) {
 
@@ -26,7 +27,7 @@ export default function ModalAddProduct(props) {
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.post('http://localhost:8000/products/', product);
+            const response = await axios.post(`${APIGATEWAY_URL}/products/`, product);
             console.log('Product added:', response.data);
             props.onHide();
             props.addProduct(response.data)

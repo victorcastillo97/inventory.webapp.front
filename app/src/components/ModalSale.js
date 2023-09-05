@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+const APIGATEWAY_URL = process.env.REACT_APP_APIGATEWAY_URL;
 
 export default function ModalSale(props) {
     const {productSelected, ...modalProps} = props;
@@ -26,7 +27,7 @@ export default function ModalSale(props) {
         try {
             dataSale["product_id"] = productSelected["id"];
             console.log("dataSale: ", dataSale);
-            const response = await axios.post('http://localhost:8000/orders/', dataSale);
+            const response = await axios.post(`${APIGATEWAY_URL}/orders/`, dataSale);
             console.log('Order added:', response.data);
             props.onHide();
         } catch (error) {

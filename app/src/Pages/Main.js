@@ -5,8 +5,12 @@ import ModalDelete from '../components/ModalDelete';
 import ModalSale from '../components/ModalSale';
 import ModalEditProduct from "../components/ModalEditProduct";
 import axios from 'axios';
+const APIGATEWAY_URL = process.env.REACT_APP_APIGATEWAY_URL;
+
 
 export default function Main(){
+    console.log("APIGATEWAY:")
+    console.log(process.env.REACT_APP_APIGATEWAY_URL);
     const [products, setProducts] = useState([]); // Añade este estado para almacenar los productos
     const [showSaleModal, setShowSaleModal] = useState(false);
     const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -22,7 +26,7 @@ export default function Main(){
 
     const fetcDeleteProduct = async (productId) => {
       try {
-        const _response = await axios.delete(`http://localhost:8000/products/${productId}`);
+        const _response = await axios.delete(`${APIGATEWAY_URL}/products/${productId}`);
         console.log(_response)
         deleteProduct(productId)
       } catch (error) {
@@ -76,7 +80,7 @@ export default function Main(){
     useEffect(() => {
         const fetchData = async () => {
           try {
-            const response = await axios.get('http://localhost:8000/products/');
+            const response = await axios.get(`${APIGATEWAY_URL}/products/`);
             setProducts(response.data);
           } catch (error) {
             console.error('Error al obtener los productos:', error);

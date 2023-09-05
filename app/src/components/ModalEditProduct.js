@@ -5,6 +5,7 @@ import Form from 'react-bootstrap/Form';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import axios from 'axios';
+const APIGATEWAY_URL = process.env.REACT_APP_APIGATEWAY_URL;
 
 export default function ModalEditProduct(props){
 
@@ -45,7 +46,7 @@ export default function ModalEditProduct(props){
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {
-            const response = await axios.put('http://localhost:8000/products/', editProduct);
+            const response = await axios.put(`${APIGATEWAY_URL}/products/`, editProduct);
             console.log('Product updated:', response.data);
             props.onHide();
         } catch (error){
